@@ -1,31 +1,23 @@
 import React, { Component } from "react";
 
 import {
-  Main,
-  Aside
+  Main
 } from '../../../../../components';
 
 import { DriverDashboard } from "../driver/driver.container";
+import { DashboardDriverLayout } from "../driver/dashoard.component";
 
 class DriverLayout extends Component {
-
-  componentDidMount() {
-    window.scrollTo(0, 0);
-  }
-
+  
   render() {
     return (
-      <div className="container-dashboard">
-        <Aside />
-        <div className="main-dashboard">
-          <Main>
-            <DriverDashboard />
-          </Main>
-        </div>
-      </div>
+      <DashboardDriverLayout>
+        <Main>
+          <DriverDashboard />
+        </Main>
+      </DashboardDriverLayout>
     )
   }
-
 };
 
 export {

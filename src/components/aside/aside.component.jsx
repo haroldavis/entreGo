@@ -15,38 +15,59 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout } from '../../features/login/store/actions';
 
+import { UserService, userUrls } from '../../api'
+let userService = new UserService();
+
 class AsideComponent extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       driverRate: '4.5',
+      ready: false,
+    }
+  }
+
+  componentDidMount() {
+    let user = localStorage.getItem('username');
+    userService.getUser(userUrls.driverDetails, { username: user }).then((res) => {
+      this.setState({
+        data: res.data.list
+      });
+      localStorage.setItem('driverDetails', JSON.stringify(res.data.list));
+    });
+  }
+
+  componentDidUpdate() {
+    if (this.state.ready !== true) {
+      this.setState({ ready: true });
     }
   }
 
   render() {
     // @1.- To connect this component to logout action
-
     return (
+      <div className="all-aside">
       <aside className="aside">
         <h1 className="title-text">entreGo</h1>
-
         <div>
           <div className="personal-info">
             <img className="personal-userphoto" src={userPlaceHolder} alt="user photo" />
-            <p className="personal-data">A really really long name</p>
+            <p className="personal-data">{this.state.ready ? `${this.state.data[0].fullname}` : 'UserName'}</p>
             <p className="personal-data star-rate">{this.state.driverRate}&nbsp;<FontAwesomeIcon icon={faStar} /></p>
           </div>
           <nav>
             <ul className="settings">
-              <li> <Link className="btn-settings">O R D E R</Link></li>
-              <li> <Link className="btn-settings">H I S T O R Y</Link></li>
-              <li> <Link className="btn-settings">H E L P</Link></li>
-              <li> <Link className="btn-settings">S E T T I N G S</Link></li>
+              <li> <Link to="" className="btn-settings">O R D E R</Link></li>
+              <li> <Link to="" className="btn-settings">H I S T O R Y</Link></li>
+              <li> <Link to="" className="btn-settings">H E L P</Link></li>
+              <li> <Link to="" className="btn-settings">S E T T I N G S</Link></li>
             </ul>
           </nav>
         </div>
-        <Link to='/' onClick={this.props.logout} className="btn-logout"><FontAwesomeIcon icon={faSignOutAlt} />&nbsp;LOGOUT</Link>      </aside>
+        <Link to='/' onClick={this.props.logout} className="btn-logout"><FontAwesomeIcon icon={faSignOutAlt} />&nbsp;LOGOUT</Link>
+      </aside>
+      </div>
     );
   }
 }

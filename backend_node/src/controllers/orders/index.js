@@ -2,15 +2,18 @@
 const express = require('express');
 
 // Middlewares
+const {tokenInHeaders} = require('../../Authentication');
 
 // Services
 const orderService = require('../../services/orders');
 
-module.exports = () => {
-    let router = express.Router();
+let router = express.Router();
 
-    router.get('/new', orderService.createOrder);
-   
-    return router;
-}
+router.get('/list', orderService.listOrder);
+router.post('/detail', orderService.getDetail);
+router.post('/create', orderService.createOrder);
+router.post('/status', orderService.updateOrder);
+
+module.exports = router;
+
 

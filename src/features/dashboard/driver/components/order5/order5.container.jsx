@@ -19,6 +19,24 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 
 class Order5Container extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ready: false
+    }
+  }
+
+  componentDidMount() {
+    let currentOrder = JSON.parse(localStorage.getItem('current'));
+    this.setState(currentOrder);
+  }
+
+  componentDidUpdate() {
+    if (this.state.ready !== true) {
+      this.setState({ ready: true });
+    }
+  }
+
   render() {
     return (
       <div className="order-5">
@@ -27,11 +45,14 @@ class Order5Container extends Component {
           <img className="driver-img-2" src={cargoTruck} alt="Cargo truck" />
         </div>
         <div className="total-earned">
-          <h2>Congratulations!</h2>
-          <h4>You win:</h4>
-          <div className="border-earned-money">
-            <p className="earned-money">20.15 $</p>
+          <div>
+            <h2>Congratulations!</h2>
+            <h4>You win:</h4>
+            <div className="border-earned-money">
+              <p className="earned-money">{this.state.ready ? `$${this.state.cost}` : '20 $'}</p>
+            </div>
           </div>
+
           <div className="check-circle">
             <FontAwesomeIcon icon={faCheckCircle} />
           </div>
